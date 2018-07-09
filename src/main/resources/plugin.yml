@@ -1,0 +1,4 @@
+name: Droplets
+version: Spigot
+main: net.thenova.droplets.server.ServerCore
+author: Arraying

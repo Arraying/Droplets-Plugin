@@ -1,0 +1,4 @@
+name: Droplets
+version: Bungee
+main: net.thenova.droplets.proxy.ProxyCore
+author: Arraying
