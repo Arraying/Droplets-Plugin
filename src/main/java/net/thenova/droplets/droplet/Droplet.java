@@ -85,6 +85,15 @@ public final class Droplet {
     }
 
     /**
+     * Display implementation of a droplet.
+     * @return The string version.
+     */
+    @Override
+    public String toString() {
+        return "Droplet[" + identifier + "]<" + address.toString().substring(1) + ">";
+    }
+
+    /**
      * The utility class for droplets.
      */
     public static final class Util {

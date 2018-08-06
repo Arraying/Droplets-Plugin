@@ -19,12 +19,24 @@ import net.thenova.droplets.droplet.Droplet;
  */
 public final class DropletAvailableEvent extends DropletEvent {
 
+    private final boolean query;
+
     /**
      * Creates a new droplet event.
      * @param droplet The droplet.
+     * @param query Whether or not it became available via an initial Bungee query.
      */
-    public DropletAvailableEvent(Droplet droplet) {
+    public DropletAvailableEvent(Droplet droplet, boolean query) {
         super(droplet);
+        this.query = query;
+    }
+
+    /**
+     * Whether or not the droplet became available via a query.
+     * @return True if it did, false otherwise.
+     */
+    public boolean isQuery() {
+        return query;
     }
 
 }

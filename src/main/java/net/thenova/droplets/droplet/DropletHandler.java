@@ -54,6 +54,7 @@ public enum DropletHandler {
      * Gets all droplets.
      * @return A collection of droplets.
      */
+    @SuppressWarnings("unused")
     public Collection<Droplet> getAll() {
         return droplets.values();
     }
@@ -74,8 +75,13 @@ public enum DropletHandler {
     /**
      * Register registers a new Droplet that is to be added to the Bungee.
      * @param droplet The droplet.
+     * @param query Whether or not the creation was via query.
      */
-    public void register(Droplet droplet) {
+    public void register(Droplet droplet, boolean query) {
+        if(droplets.containsKey(droplet.getIdentifier())) {
+            Core.INSTANCE.getLogger().info("Droplet " + droplet.getIdentifier() + " already registered.");
+            return;
+        }
         ServerInfo info = ProxyServer.getInstance().constructServerInfo(droplet.getIdentifier(),
                 droplet.getAddress(),
                 "Droplet",
@@ -83,7 +89,7 @@ public enum DropletHandler {
         ProxyServer.getInstance().getServers().put(droplet.getIdentifier(), info);
         droplets.put(droplet.getIdentifier(), droplet);
         consumption.invoke(droplet);
-        ProxyServer.getInstance().getPluginManager().callEvent(new DropletAvailableEvent(droplet));
+        ProxyServer.getInstance().getPluginManager().callEvent(new DropletAvailableEvent(droplet, query));
         Core.INSTANCE.getLogger().info("Registered droplet " + droplet.getIdentifier() + ".");
     }
 

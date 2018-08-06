@@ -108,13 +108,13 @@ public enum Redis {
                 break;
             case RedisConstants.ACTION_IDENTIFY:
                 if(self.equals(RedisConstants.SENDER_PROXY)) {
-                    DropletHandler.INSTANCE.register(Droplet.Util.fromIdentifyData(payload.getData()));
+                    DropletHandler.INSTANCE.register(Droplet.Util.fromIdentifyData(payload.getData()), false);
                 }
                 break;
             case RedisConstants.ACTION_QUERY:
                 if(self.equals(RedisConstants.SENDER_PROXY)) {
                     for(Droplet droplet : Droplet.Util.fromQueryData(payload.getData())) {
-                        DropletHandler.INSTANCE.register(droplet);
+                        DropletHandler.INSTANCE.register(droplet, true);
                     }
                 }
                 break;
