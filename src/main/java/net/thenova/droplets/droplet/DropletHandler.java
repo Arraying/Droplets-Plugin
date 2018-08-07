@@ -10,11 +10,10 @@ import net.thenova.droplets.common.redis.RedisConstants;
 import net.thenova.droplets.proxy.event.DropletAvailableEvent;
 import net.thenova.droplets.proxy.event.DropletUnavailableEvent;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Copyright 2018 Arraying
@@ -39,6 +38,7 @@ public enum DropletHandler {
     INSTANCE;
 
     private final Consumption consumption = new Consumption();
+    private final List<Predicate<Droplet>> disposalPredicates = new ArrayList<>();
     private final Map<String, Droplet> droplets = new ConcurrentHashMap<>();
 
     /**
@@ -48,6 +48,14 @@ public enum DropletHandler {
      */
     public Droplet getDroplet(String identifier) {
         return droplets.get(identifier);
+    }
+
+    /**
+     * Gets all disposal predicates.
+     * @return A list of predicates.
+     */
+    public List<Predicate<Droplet>> getDisposalPredicates() {
+        return disposalPredicates;
     }
 
     /**
@@ -70,6 +78,21 @@ public enum DropletHandler {
                 .put(RedisConstants.DATA_DATA, data.getData())
         );
         consumption.add(template, data.getConsumer());
+    }
+
+    /**
+     * Disposes of all newly created droplets that meet the predicate.
+     * @param predicate The predicate.
+     */
+    public void dispose(Predicate<Droplet> predicate) {
+        disposalPredicates.add(predicate);
+        for(Predicate<Droplet> dropletPredicate : disposalPredicates) {
+            for(Droplet droplet : getAll()) {
+                if(dropletPredicate.test(droplet)) {
+                    droplet.delete();
+                }
+            }
+        }
     }
 
     /**

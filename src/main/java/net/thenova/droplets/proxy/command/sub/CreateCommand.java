@@ -2,7 +2,6 @@ package net.thenova.droplets.proxy.command.sub;
 
 import net.thenova.droplets.droplet.DropletCreationData;
 import net.thenova.droplets.droplet.DropletHandler;
-import net.thenova.droplets.droplet.DropletTemplate;
 import net.thenova.droplets.proxy.command.internal.AbstractSubCommand;
 import net.thenova.droplets.proxy.command.internal.Context;
 import net.thenova.droplets.proxy.command.internal.responses.MessageResponse;

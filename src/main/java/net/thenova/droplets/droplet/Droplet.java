@@ -90,7 +90,7 @@ public final class Droplet {
      */
     @Override
     public String toString() {
-        return "Droplet[" + identifier + "]<" + address.toString().substring(1) + ">";
+        return "D[" + identifier + "][" + address.toString().substring(1) + "]";
     }
 
     /**

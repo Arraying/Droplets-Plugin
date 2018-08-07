@@ -10,6 +10,8 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.util.function.Predicate;
+
 /**
  * Copyright 2018 Arraying
  * <p>
@@ -115,6 +117,11 @@ public enum Redis {
                 if(self.equals(RedisConstants.SENDER_PROXY)) {
                     for(Droplet droplet : Droplet.Util.fromQueryData(payload.getData())) {
                         DropletHandler.INSTANCE.register(droplet, true);
+                        for(Predicate<Droplet> predicate : DropletHandler.INSTANCE.getDisposalPredicates()) {
+                            if(predicate.test(droplet)) {
+                                droplet.delete();
+                            }
+                        }
                     }
                 }
                 break;
